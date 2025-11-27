@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Pankaj Enterprises - E-Commerce</title>
+    <style>
+        /* Global reset */
+        * { box-sizing: border-box; }
+        html, body { margin: 0; padding: 0; width: 100%; overflow-x: hidden; font-family: 'Arial', sans-serif; }
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+        }
+
+        header{
+            background: rgba(255,255,255,0.93);
+            padding: 20px;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            flex-wrap:wrap;
+            box-shadow:0 2px 10px rgba(0,0,0,0.12);
+        }
+        .logo{ font-size:24px; font-weight:700; color:#764ba2; }
+
+        nav ul{ list-style:none; display:flex; gap:18px; padding:0; margin:0; flex-wrap:wrap; }
+        nav a{ text-decoration:none; color:#333; font-weight:500; cursor:pointer; }
+
+        .hero, .products, .about, .contact, .product-detail, .order-section {
+            max-width:100%;
+            padding:50px 20px;
+            margin:0 auto;
+            text-align:center;
+            color:white;
+        }
+        .hero h1{ font-size:48px; margin-bottom:20px; }
+        .hero p{ font-size:20px; margin-bottom:30px; }
+
+        .btn {
+            background: #ff6b6b;
+            color: white;
+            padding: 12px 22px;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 700;
+            cursor: pointer;
+            border: none;
+            display: inline-block;
+        }
+
+        .products { background: white; color: #333; padding:40px 20px; }
+        .product-grid {
+            display:grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px,1fr));
+            gap:20px;
+            max-width:1200px;
+            margin:0 auto;
+        }
+        .product {
+            background:#f9f9f9;
+            padding:18px;
+            border-radius:10px;
+            box-shadow:0 4px 8px rgba(0,0,0,0.08);
+        }
+        .product img { width:100%; height:200px; object-fit:cover; border-radius:6px; }
+        .product-detail img { width:100%; max-width:300px; height:auto; object-fit:cover; border-radius:10px; margin-bottom:20px; }
+
+        /* Form styles (match theme) */
+        .form-wrap {
+            display:flex;
+            flex-direction:column;
+            align-items:center;
+            gap:8px;
+        }
+        .form-row {
+            width:100%;
+            max-width:520px;
+            display:flex;
+            gap:12px;
+            flex-wrap:wrap;
+            justify-content:center;
+        }
+        input[type="text"], input[type="number"], select, textarea {
+            width:100%;
+            max-width:520px;
+            padding:12px;
+            margin:8px 0;
+            border-radius:8px;
+            border:1px solid rgba(0,0,0,0.12);
+            font-size:15px;
+        }
+        textarea { min-height:80px; resize:vertical; }
+
+        .wide-btn {
+            width:100%;
+            max-width:520px;
+            padding:12px;
+            border-radius:8px;
+            font-size:16px;
+            font-weight:700;
+            border:none;
+            cursor:pointer;
+        }
+        .confirm-btn { background:#00c853; color:white; }
+        .cancel-btn { background:#ff4444; color:white; }
+
+        /* Important note box */
+        .note-box {
+            margin-top:14px;
+            background: rgba(255,255,0,0.12);
+            border-left:4px solid #ffeb3b;
+            padding:12px;
+            border-radius:8px;
+            color:white;
+            font-size:14px;
+            text-align:left;
+            max-width:520px;
+            margin-left:auto;
+            margin-right:auto;
+            line-height:1.5;
+        }
+
+        footer { background:#333; color:white; text-align:center; padding:20px; }
+
+        @media (max-width:700px){
+            .hero h1 { font-size:32px; }
+            .hero p { font-size:16px; }
+            .product img { height:160px; }
+            .form-row { padding:0 10px; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">Pankaj Enterprises</div>
+        <nav>
+            <ul>
+                <li><a onclick="showSection('hero')">Home</a></li>
+                <li><a onclick="showSection('products')">Products</a></li>
+                <li><a onclick="showSection('about')">About</a></li>
+                <li><a onclick="showSection('contact')">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="hero" class="hero">
+        <h1>Welcome to Pankaj Enterprises</h1>
+        <p>Premium quality products at the best price.</p>
+        <a onclick="showSection('products')" class="btn">Shop Now</a>
+    </section>
+
+    <section id="products" class="products" style="display:none;">
+        <h2 style="color:#333;">Featured Products</h2>
+        <div class="product-grid">
+            <div class="product">
+                <img src="https://m.media-amazon.com/images/I/311vjOKRhZL._AC_UF1000,1000_QL80_.jpg" alt="Carbide Gun">
+                <h3>Monkey Deterrent Carbide Gun</h3>
+                <p>1500₹</p>
+                <button class="btn" onclick="showProductDetail(
+                    'Monkey Deterrent Carbide Gun', 
+                    '1500₹', 
+                    'https://m.media-amazon.com/images/I/311vjOKRhZL._AC_UF1000,1000_QL80_.jpg'
+                )">View Details</button>
+            </div>
+        </div>
+    </section>
+
+    <section id="product-detail" class="product-detail" style="display:none;">
+        <h2 id="pd-title">Product Details</h2>
+        <img id="pd-img" src="" alt="Product Image">
+        <h3 id="pd-name"></h3>
+        <p id="pd-price"></p>
+        <button class="btn" onclick="showOrderForm()">Order Now</button>
+        <br><br>
+        <button class="btn" onclick="hideProductDetail()">Back to Products</button>
+    </section>
+
+    <!-- ORDER SECTION (updated: House No, 2 Landmarks, note under Cancel) -->
+    <section id="order-section" class="order-section" style="display:none;">
+        <h2>Place Your Order</h2>
+
+        <div class="form-wrap">
+            <div class="form-row">
+                <input id="cust-name" type="text" placeholder="Full Name" />
+            </div>
+
+            <div class="form-row">
+                <input id="cust-phone" type="text" placeholder="Mobile Number (eg. 91XXXXXXXXXX)" />
+            </div>
+
+            <div class="form-row">
+                <select id="cust-state">
+                    <option value="">Select State / Union Territory</option>
+                    <option>Andhra Pradesh</option>
+                    <option>Arunachal Pradesh</option>
+                    <option>Assam</option>
+                    <option>Bihar</option>
+                    <option>Chhattisgarh</option>
+                    <option>Goa</option>
+                    <option>Gujarat</option>
+                    <option>Haryana</option>
+                    <option>Himachal Pradesh</option>
+                    <option>Jharkhand</option>
+                    <option>Karnataka</option>
+                    <option>Kerala</option>
+                    <option>Madhya Pradesh</option>
+                    <option>Maharashtra</option>
+                    <option>Manipur</option>
+                    <option>Meghalaya</option>
+                    <option>Mizoram</option>
+                    <option>Nagaland</option>
+                    <option>Odisha</option>
+                    <option>Punjab</option>
+                    <option>Rajasthan</option>
+                    <option>Sikkim</option>
+                    <option>Tamil Nadu</option>
+                    <option>Telangana</option>
+                    <option>Tripura</option>
+                    <option>Uttar Pradesh</option>
+                    <option>Uttarakhand</option>
+                    <option>West Bengal</option>
+                    <option>Andaman and Nicobar Islands</option>
+                    <option>Chandigarh</option>
+                    <option>Dadra and Nagar Haveli and Daman & Diu</option>
+                    <option>Delhi</option>
+                    <option>Jammu and Kashmir</option>
+                    <option>Ladakh</option>
+                    <option>Lakshadweep</option>
+                    <option>Puducherry</option>
+                </select>
+            </div>
+
+            <div class="form-row">
+                <input id="cust-district" type="text" placeholder="District" />
+            </div>
+
+            <div class="form-row">
+                <input id="cust-pincode" type="text" placeholder="Pincode" />
+            </div>
+
+            <div class="form-row">
+                <input id="cust-village" type="text" placeholder="Village" />
+            </div>
+
+            <div class="form-row">
+                <!-- House No (used to be Apartment) -->
+                <input id="cust-houseno" type="text" placeholder="House No. (if unknown write NO)" />
+            </div>
+
+            <div class="form-row">
+                <input id="cust-landmark1" type="text" placeholder="Nearest Landmark 1" />
+            </div>
+
+            <div class="form-row">
+                <input id="cust-landmark2" type="text" placeholder="Nearest Landmark 2 (optional)" />
+            </div>
+
+            <div class="form-row">
+                <button class="wide-btn confirm-btn" onclick="sendOrder()">Confirm Order</button>
+            </div>
+
+            <div class="form-row">
+                <button class="wide-btn cancel-btn" onclick="hideOrderForm()">Cancel</button>
+            </div>
+
+            <!-- Highlighted Note under Cancel -->
+            <div class="note-box" role="note" aria-live="polite">
+                <strong>Important:</strong><br>
+                If you live in a village and you don’t know your House No., please write <strong>“NO”</strong> in the House Number field.
+                In the Nearest Landmark fields, please write the names of nearby places so we can locate your house easily.
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="about" style="display:none;">
+        <h2>About Us</h2>
+        <p><b>Shop:</b> Pankaj Enterprises</p>
+        <p><b>Address:</b> Jivanpur, Chandauli, Uttar Pradesh</p>
+        <p><b>Owner:</b> Alok Ranjan Tripathi</p>
+        <p><b>Customer Care:</b> +91 9415977070</p>
+    </section>
+
+    <section id="contact" class="contact" style="display:none;">
+        <h2>Contact Us</h2>
+        <p><b>Phone:</b> +91 8112455238</p>
+        <p><b>Email:</b> contactmrsrt@gmail.com</p>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 Pankaj Enterprises. All rights reserved.</p>
+    </footer>
+
+    <script>
+        let currentProductName = "";
+        let currentProductPrice = "";
+
+        function showSection(sectionId) {
+            ['hero','products','about','contact','product-detail','order-section']
+            .forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.style.display = 'none';
+            });
+            const showEl = document.getElementById(sectionId);
+            if (showEl) showEl.style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function showProductDetail(name, price, imgSrc) {
+            currentProductName = name;
+            currentProductPrice = price;
+            document.getElementById('pd-name').innerText = name;
+            document.getElementById('pd-price').innerText = "Price: " + price;
+            document.getElementById('pd-img').src = imgSrc;
+            showSection('product-detail');
+        }
+
+        function hideProductDetail() { showSection('products'); }
+        function showOrderForm() { showSection('order-section'); }
+        function hideOrderForm() { showSection('product-detail'); }
+
+        function sendOrder() {
+            const name = document.getElementById("cust-name").value.trim();
+            const phone = document.getElementById("cust-phone").value.trim();
+            const state = document.getElementById("cust-state").value.trim();
+            const district = document.getElementById("cust-district").value.trim();
+            const pincode = document.getElementById("cust-pincode").value.trim();
+            const village = document.getElementById("cust-village").value.trim();
+            const houseno = document.getElementById("cust-houseno").value.trim();
+            const lm1 = document.getElementById("cust-landmark1").value.trim();
+            const lm2 = document.getElementById("cust-landmark2").value.trim();
+
+            // Basic validation: require key fields. House No may be "NO" if unknown.
+            if (!name) { alert("Please enter Full Name."); return; }
+            if (!phone) { alert("Please enter Mobile Number."); return; }
+            if (!state) { alert("Please select State."); return; }
+            if (!district) { alert("Please enter District."); return; }
+            if (!pincode) { alert("Please enter Pincode."); return; }
+            if (!village) { alert("Please enter Village."); return; }
+            if (!houseno) { alert("If you don't know House No, write NO in the House No field."); return; }
+            if (!lm1 && !lm2) { 
+                // at least one landmark recommended
+                const ok = confirm("You haven't entered any landmark. It's recommended to add at least one nearby landmark. Continue anyway?");
+                if (!ok) return;
+            }
+
+            // Build address string
+            let landmarks = [];
+            if (lm1) landmarks.push(lm1);
+            if (lm2) landmarks.push(lm2);
+            const landmarkText = landmarks.length ? landmarks.join(' | ') : 'N/A';
+
+            const address = `House No: ${houseno}, Village: ${village}, District: ${district}, State: ${state}, Pincode: ${pincode}, Landmark(s): ${landmarkText}`;
+
+            const msg =
+`📦 *New Order Received*
+-----------------------
+🛒 *Product:* ${currentProductName || '(not selected)'}
+💰 *Price:* ${currentProductPrice || '(not selected)'}
+
+👤 *Customer:* ${name}
+📞 *Phone:* ${phone}
+🏠 *Address:* ${address}`;
+
+            // Open WhatsApp with pre-filled message (shop number kept as original)
+            const phoneNumber = "919415977070";
+            const url = "https://wa.me/" + phoneNumber + "?text=" + encodeURIComponent(msg);
+            window.open(url, "_blank");
+        }
+
+        // initialize: show hero
+        showSection('hero');
+    </script>
+</body>
+</html>
